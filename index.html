@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site de téléchargement de photos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Jost', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #020202;
+            color: #ffffff;
+        }
+        header {
+            background-color: #111111;
+            padding: 20px 0;
+            border-bottom: 1px solid #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 200px;
+            transition: transform 0.5s ease-in-out;
+        }
+        .logo:hover {
+            transform: rotate(360deg) scale(1.1);
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .card {
+            background-color: #111111;
+            border-radius: 8px;
+            border: 1px solid #ffffff;
+            margin: 10px;
+            overflow: hidden;
+            width: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.1);
+        }
+        .card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        .card-content {
+            padding: 20px;
+        }
+        .card-title {
+            font-size: 18px;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+        .card-subtitle {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .download-btn {
+            background-color: transparent;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .download-btn:hover {
+            background-color: #ffffff;
+            color: #020202;
+        }
+        #scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffffff;
+            color: #020202;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+        footer {
+            background-color: #111111;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://i.goopics.net/wkiv3v.png" alt="Logo" class="logo">
+    </header>
+    <div class="container" id="card-container"></div>
+    <div id="scroll-top">↑</div>
+    <footer>
+        Ce footer se fout de Fuze :D - Imagined by Dartsgame - Coded by Claude AI l'esclave
+    </footer>
+
+    <script>
+        const cardContainer = document.getElementById('card-container');
+
+        function createCard(card) {
+            return `
+                <div class="card">
+                    <img src="${card.imageUrl}" alt="${card.title}">
+                    <div class="card-content">
+                        <h2 class="card-title">${card.title}</h2>
+                        <p class="card-subtitle">${card.subtitle}</p>
+                     
+                    </div>
+                </div>
+            `;
+        }
+
+        // Données JSON pour les cartes
+        const jsonData = {
+            "cards": [
+                {
+                    "title": "Fuze Grognon",
+                    "subtitle": "Source: Reddit",
+                    "imageUrl": "https://i.redd.it/7fx85vqa5jed1.png"
+                },
+                {
+                    "title": "Fuze 8 ans",
+                    "subtitle": "Source: Twitter",
+                    "imageUrl": "https://i.goopics.net/epgj9b.jpg"
+                },
+                {
+                    "title": "Fuze le matin",
+                    "subtitle": "Source: _TimoT_ (Reddit)",
+                    "imageUrl": "https://preview.redd.it/6po9htglkcr91.png?width=331&format=png&auto=webp&s=3f87532720d5378723440723f94f6b223c33373d"
+                },
+                {
+                    "title": "Fuze Maquillé",
+                    "subtitle": "Source: Youtube",
+                    "imageUrl": "https://i.redd.it/vmsm324bptrb1.png"
+                },
+                {
+                    "title": "Fuze 3d",
+                    "subtitle": "Source: YellowStudio Reddit",
+                    "imageUrl": "https://preview.redd.it/ptit-rendu-3d-de-fuze-xd-v0-zupewcagdok81.png?auto=webp&s=a382ed944b1023fb53aab4d3e0398d27b5fd999a"
+                },
+                {
+                    "title": "Fuze Casquette Veuch Long",
+                    "subtitle": "Source: Stancraft27",
+                    "imageUrl": "https://preview.redd.it/la-team-qui-regrette-les-cheveux-longs-de-fuze-v0-obhbrcleddnc1.png?auto=webp&s=9da63e6cb27a7834c05e7561b48b244c3f97c7ac"
+                },
+                {
+                    "title": "Fuze ses veuch dans la nature",
+                    "subtitle": "Source: Youtube",
+                    "imageUrl": "https://i.ytimg.com/vi/0nKjuyPtKB8/maxresdefault.jpg"
+                },
+                {
+                    "title": "Fuze Dentifrice",
+                    "subtitle": "Source: Twitter",
+                    "imageUrl": "https://pm1.narvii.com/6993/d915f2ea05b4cb8c778a1e803c7dc9ef2502a868r1-423-609v2_00.jpg"
+                },
+                {
+                    "title": "Fuze dans la Lune",
+                    "subtitle": "Source: Twitter",
+                    "imageUrl": "https://pbs.twimg.com/media/EAp3u_1XYAUEKLX.jpg"
+                },
+                {
+                    "title": "Le 1er sosie de Fuze",
+                    "subtitle": "Source: Twitter",
+                    "imageUrl": "https://i.goopics.net/dics26.jpg"
+                },
+                {
+                    "title": "Fuze Vent",
+                    "subtitle": "Source: SeAuBitcH",
+                    "imageUrl": "https://i.redd.it/frrauorrivcd1.png"
+                },
+                {
+                    "title": "Fuze mouillé",
+                    "subtitle": "Source: Le_chat_fr",
+                    "imageUrl": "https://i.redd.it/u4j5zyq4gdbd1.jpeg"
+                },
+                {
+                    "title": "Fuze sa camionette avec des bonbons",
+                    "subtitle": "Source: IB2M_Official",
+                    "imageUrl": "https://i.redd.it/8k6e6rf744bd1.png"
+                },
+                {
+                    "title": "Fuze le caissier",
+                    "subtitle": "Source: zaturalive_",
+                    "imageUrl": "https://preview.redd.it/fuze-mister-beast-est-fini-dici-3-ans-v0-wzqmudnrvd9d1.jpeg?auto=webp&s=5418a347cc782632856d4ab1493f6b6d9474ea1e"
+                },
+                {
+                    "title": "Fuze le SCP",
+                    "subtitle": "Source: toureveure",
+                    "imageUrl": "https://i.redd.it/rgrp416ioc8d1.png"
+                },
+                {
+                    "title": "Fuze s'est rasé",
+                    "subtitle": "Source: Twitter",
+                    "imageUrl": "https://i.goopics.net/eerf86.jpg"
+                },
+                {
+                    "title": "Fuze caught in 4k",
+                    "subtitle": "Source: Realistic_Tap_9597",
+                    "imageUrl": "https://i.redd.it/ig6dkvq9fq7d1.jpeg"
+                },
+                {
+                    "title": "Fuze Chewing-Gum 2",
+                    "subtitle": "Source: u/abdellaya123",
+                    "imageUrl": "https://preview.redd.it/hop-une-nouvelle-t%C3%AAte-cheloue-de-fuze-derien-v0-ixc4pxjyf77d1.png?auto=webp&s=c34d3904a2d0e4f3017de9b6e966bab9bd457194"
+                },
+                {
+                    "title": "Fuze Tour Jumelles",
+                    "subtitle": "Source: Herolio_2469",
+                    "imageUrl": "https://preview.redd.it/e5wpkf6qfz4d1.png?auto=webp&s=22af1c7256eafba913c91e64c4960ebf470e2fdf"
+                },
+                {
+                    "title": "Fuze Ligoté",
+                    "subtitle": "Source: Twitter",
+                    "imageUrl": "https://i.goopics.net/occmfv.jpg"
+                },
+                {
+                    "title": "Fuze Ligoté2",
+                    "subtitle": "Source: Mybios",
+                    "imageUrl": "https://i.goopics.net/occmfv.jpg"
+                },
+                {
+                    "title": "Fuze Choqué",
+                    "subtitle": "Source: Aywen",
+                    "imageUrl": "https://i.goopics.net/4954cx.png"
+                },
+                {
+                    "title": "Fuze Ado",
+                    "subtitle": "Source: Aywen",
+                    "imageUrl": "https://i.goopics.net/bbziy2.png"
+                },
+                {
+                    "title": "Fuze Nerd",
+                    "subtitle": "Source: Twitter",
+                    "imageUrl": "https://i.goopics.net/l9ea2u.jpg"
+                },
+                {
+                    "title": "Fuze Herobrine",
+                    "subtitle": "Source: gt15e",
+                    "imageUrl": "https://preview.redd.it/la-vid%C3%A9o-a-lag%C3%A9-et-sest-arr%C3%AAt%C3%A9-l%C3%A0-dessus-youtube-ma-fait-v0-nls0ztrd90yc1.jpeg?width=640&crop=smart&auto=webp&s=93bf11bcce19db8c9f5ab6b9885155ee317a302f"
+                },
+                {
+                    "title": "Fuze Chewing-Gum",
+                    "subtitle": "Source: Twitter",
+                    "imageUrl": "https://preview.redd.it/cest-quoi-cette-t%C3%AAte-v0-4bmo85bvs0xc1.png?auto=webp&s=b7ad22f5cde0c233411848c8bcaba06b2cccabda"
+                },
+                {
+                    "title": "Fuze Drogue",
+                    "subtitle": "Source: Gab33110",
+                    "imageUrl": "https://pbs.twimg.com/media/D6my_7-XoAA-HBc.png"
+                },
+                {
+                    "title": "Fuze Creppy",
+                    "subtitle": "Source: Twitter",
+                    "imageUrl": "https://preview.redd.it/viens-prendre-ton-airtag-mon-enfant-v0-t4mp88s760wc1.png?auto=webp&s=6a17e869962a22752347a53a542cf8725fd49e01"
+                },
+                {
+                    "title": "Fuze Fume",
+                    "subtitle": "Source: Youtube",
+                    "imageUrl": "https://i.goopics.net/e5ya07.png"
+                },
+                {
+                    "title": "Fuze 17 ans et son acné",
+                    "subtitle": "Source: Youtube",
+                    "imageUrl": "https://i.goopics.net/pwnz89.png"
+                },
+                {
+                    "title": "Fuze souffre",
+                    "subtitle": "Source: Twitter",
+                    "imageUrl": "https://i.goopics.net/reh58h.png"
+                },
+                {
+                    "title": "Fuze en PLS",
+                    "subtitle": "Source: Twitter",
+                    "imageUrl": "https://i.goopics.net/7ck632.png"
+                },
+                {
+                    "title": "Fuze l'attardé",
+                    "subtitle": "Source: Reddit",
+                    "imageUrl": "https://i.redd.it/compilation-des-meilleurs-photos-de-fuzeiii-v0-b69j6fkudofb1.jpg?width=515&format=pjpg&auto=webp&s=0489e615287766523786f31e4669c089b2fdd5b9"
+                }
+            ]
+        };
+
+        // Utilisez directement les données JSON
+        jsonData.cards.forEach(card => {
+            cardContainer.innerHTML += createCard(card);
+        });
+
+        const scrollTopButton = document.getElementById('scroll-top');
+
+        window.onscroll = function() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollTopButton.style.display = "block";
+            } else {
+                scrollTopButton.style.display = "none";
+            }
+        };
+
+        scrollTopButton.onclick = function() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        };
+
+        // Add audio for logo hover
+        const logo = document.querySelector('.logo');
+        const logoSound = new Audio('https://audio.jukehost.co.uk/z5uU9kvCCceBzqzCtMDo4vSABGJtEIFa');
+
+        logo.addEventListener('mouseenter', () => {
+            logoSound.play();
+        });
+
+        // Add audio for card hover
+        const cardSound = new Audio('https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-46416/zapsplat_multimedia_button_click_007_53868.mp3');
+
+        document.addEventListener('mouseover', function (e) {
+            if (e.target.closest('.card')) {
+                cardSound.play();
+            }
+        });
+    </script>
+</body>
+</html>
